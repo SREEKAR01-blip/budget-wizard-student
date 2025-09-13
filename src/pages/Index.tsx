@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Dashboard } from "@/components/Dashboard";
-import { Terminal } from "@/components/Terminal";
 
 const Index = () => {
   // Mock data for demonstration
@@ -25,7 +24,7 @@ const Index = () => {
   });
 
   return (
-    <div className="min-h-screen bg-background pb-72">
+    <div className="min-h-screen bg-background">
       <Dashboard 
         totalBalance={financialData.totalBalance}
         monthlyBudget={financialData.monthlyBudget}
@@ -33,7 +32,6 @@ const Index = () => {
         goals={financialData.goals}
         recentExpenses={financialData.recentExpenses}
       />
-      <Terminal />
     </div>
   );
 };
