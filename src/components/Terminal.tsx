@@ -32,28 +32,28 @@ export const Terminal = () => {
 • clear - Clear terminal
 • analyze - AI spending analysis`,
 
-    balance: () => `Current Balance: $2,847.50
-Monthly Budget: $1,200.00
-Spent This Month: $847.32
-Remaining: $352.68`,
+    balance: () => `Current Balance: ₹2,847.50
+Monthly Budget: ₹1,200.00
+Spent This Month: ₹847.32
+Remaining: ₹352.68`,
 
     expenses: (period = "today") => {
       const data = {
-        today: "Today's Expenses:\n• Coffee - $4.50 (Food)\n• Bus fare - $2.25 (Transport)\n• Lunch - $12.00 (Food)\nTotal: $18.75",
-        week: "This Week's Expenses:\n• Groceries - $85.40 (Food)\n• Gas - $45.00 (Transport)\n• Books - $120.00 (Education)\n• Entertainment - $35.50 (Fun)\nTotal: $285.90",
-        month: "This Month's Expenses:\n• Rent - $400.00 (Housing)\n• Food - $285.50 (Food)\n• Transport - $67.25 (Transport)\n• Education - $94.57 (Education)\nTotal: $847.32"
+        today: "Today's Expenses:\n• Coffee - ₹4.50 (Food)\n• Bus fare - ₹2.25 (Transport)\n• Lunch - ₹12.00 (Food)\nTotal: ₹18.75",
+        week: "This Week's Expenses:\n• Groceries - ₹85.40 (Food)\n• Gas - ₹45.00 (Transport)\n• Books - ₹120.00 (Education)\n• Entertainment - ₹35.50 (Fun)\nTotal: ₹285.90",
+        month: "This Month's Expenses:\n• Rent - ₹400.00 (Housing)\n• Food - ₹285.50 (Food)\n• Transport - ₹67.25 (Transport)\n• Education - ₹94.57 (Education)\nTotal: ₹847.32"
       };
       return data[period as keyof typeof data] || data.today;
     },
 
     budget: (amount?: string) => {
-      if (!amount) return "Current budget: $1,200.00\nUsage: budget [amount] to set new budget";
-      return `Budget updated to $${amount}`;
+      if (!amount) return "Current budget: ₹1,200.00\nUsage: budget [amount] to set new budget";
+      return `Budget updated to ₹${amount}`;
     },
 
     goal: (name?: string, amount?: string) => {
       if (!name || !amount) return "Usage: goal [name] [amount]\nExample: goal laptop 800";
-      return `🎯 New goal created: ${name} - $${amount}`;
+      return `🎯 New goal created: ${name} - ₹${amount}`;
     },
 
     categories: () => `Expense Categories:
@@ -71,7 +71,7 @@ Remaining: $352.68`,
 • Spending pattern: Normal for student
 • Highest category: Food (33% above average)
 • Recommendation: Consider meal planning
-• Savings potential: $127/month
+• Savings potential: ₹127/month
 • Risk level: Low`
   };
 

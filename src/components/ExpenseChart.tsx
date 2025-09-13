@@ -133,7 +133,7 @@ export const ExpenseChart = ({ expenses }: ExpenseChartProps) => {
                       <span className="text-sm text-foreground">{item.category}</span>
                     </div>
                     <span className="text-sm font-medium text-foreground">
-                      ${item.amount.toFixed(2)}
+                      ₹{item.amount.toFixed(2)}
                     </span>
                   </div>
                 ))}

@@ -54,7 +54,7 @@ export const Dashboard = ({
             <Wallet className="h-4 w-4 text-success" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-foreground">${totalBalance.toFixed(2)}</div>
+            <div className="text-2xl font-bold text-foreground">₹{totalBalance.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground mt-1">
               Available funds
             </p>
@@ -67,7 +67,7 @@ export const Dashboard = ({
             <DollarSign className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-foreground">${monthlyBudget.toFixed(2)}</div>
+            <div className="text-2xl font-bold text-foreground">₹{monthlyBudget.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground mt-1">
               Budget limit
             </p>
@@ -81,7 +81,7 @@ export const Dashboard = ({
           </CardHeader>
           <CardContent>
             <div className={`text-2xl font-bold ${isOverBudget ? 'text-danger' : 'text-foreground'}`}>
-              ${spent.toFixed(2)}
+              ₹{spent.toFixed(2)}
             </div>
             <p className="text-xs text-muted-foreground mt-1">
               {spentPercentage.toFixed(1)}% of budget
@@ -96,7 +96,7 @@ export const Dashboard = ({
           </CardHeader>
           <CardContent>
             <div className={`text-2xl font-bold ${remaining < 0 ? 'text-danger' : 'text-success'}`}>
-              ${Math.abs(remaining).toFixed(2)}
+              ₹{Math.abs(remaining).toFixed(2)}
             </div>
             <p className="text-xs text-muted-foreground mt-1">
               {remaining < 0 ? 'Over budget' : 'Left to spend'}
@@ -116,8 +116,8 @@ export const Dashboard = ({
         <CardContent>
           <div className="space-y-3">
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Spent: ${spent.toFixed(2)}</span>
-              <span className="text-muted-foreground">Budget: ${monthlyBudget.toFixed(2)}</span>
+              <span className="text-muted-foreground">Spent: ₹{spent.toFixed(2)}</span>
+              <span className="text-muted-foreground">Budget: ₹{monthlyBudget.toFixed(2)}</span>
             </div>
             <Progress 
               value={Math.min(spentPercentage, 100)} 
@@ -126,7 +126,7 @@ export const Dashboard = ({
             {isOverBudget && (
               <div className="flex items-center gap-2 text-danger text-sm">
                 <AlertTriangle className="h-4 w-4" />
-                You're over budget by ${(spent - monthlyBudget).toFixed(2)}
+                You're over budget by ₹{(spent - monthlyBudget).toFixed(2)}
               </div>
             )}
           </div>
@@ -153,7 +153,7 @@ export const Dashboard = ({
                     <div className="flex justify-between text-sm">
                       <span className="font-medium text-foreground">{goal.name}</span>
                       <span className="text-muted-foreground">
-                        ${goal.current} / ${goal.target}
+                        ₹{goal.current} / ₹{goal.target}
                       </span>
                     </div>
                     <Progress value={progress} className="h-2" />

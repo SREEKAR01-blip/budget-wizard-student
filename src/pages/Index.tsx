@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Dashboard } from "@/components/Dashboard";
 
 const Index = () => {
-  // Mock data for demonstration
+  // Mock data for demonstration (amounts in Indian Rupees)
   const [financialData] = useState({
     totalBalance: 2847.50,
     monthlyBudget: 1200.00,
