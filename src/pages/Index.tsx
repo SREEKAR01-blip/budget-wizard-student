@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Dashboard } from "@/components/Dashboard";
+import { ProfileSection } from "@/components/ProfileSection";
+import { ChatBox } from "@/components/ChatBox";
 
 const Index = () => {
   // Mock data for demonstration (amounts in Indian Rupees)
-  const [financialData] = useState({
+  const [financialData, setFinancialData] = useState({
     totalBalance: 2847.50,
     monthlyBudget: 1200.00,
     spent: 847.32,
@@ -23,15 +25,27 @@ const Index = () => {
     ]
   });
 
+  const updateFinancialData = (updates: Partial<typeof financialData>) => {
+    setFinancialData(prev => ({ ...prev, ...updates }));
+  };
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden" style={{ scrollBehavior: 'smooth' }}>
+      <div className="flex justify-between items-center p-4 border-b border-border">
+        <h1 className="text-2xl font-bold text-foreground">Student Finance Manager</h1>
+        <ProfileSection />
+      </div>
+      
       <Dashboard 
         totalBalance={financialData.totalBalance}
         monthlyBudget={financialData.monthlyBudget}
         spent={financialData.spent}
         goals={financialData.goals}
         recentExpenses={financialData.recentExpenses}
+        onUpdateData={updateFinancialData}
       />
+      
+      <ChatBox />
     </div>
   );
 };

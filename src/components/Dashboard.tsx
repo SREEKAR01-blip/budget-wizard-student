@@ -1,9 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Wallet, TrendingUp, Target, AlertTriangle, Plus, DollarSign } from "lucide-react";
+import { Wallet, TrendingUp, Target, AlertTriangle, Plus, DollarSign, Edit, Share, Banknote, PiggyBank } from "lucide-react";
 import { ExpenseChart } from "./ExpenseChart";
 import { QuickActions } from "./QuickActions";
+import { EditableField } from "./EditableField";
+import { ShareExpenses } from "./ShareExpenses";
+import { PersonalWallet } from "./PersonalWallet";
+import { EnhancedCharts } from "./EnhancedCharts";
+import { useToast } from "@/hooks/use-toast";
 
 interface DashboardProps {
   totalBalance: number;
@@ -22,6 +27,7 @@ interface DashboardProps {
     category: string;
     date: string;
   }>;
+  onUpdateData: (updates: any) => void;
 }
 
 export const Dashboard = ({ 
@@ -29,21 +35,42 @@ export const Dashboard = ({
   monthlyBudget, 
   spent, 
   goals, 
-  recentExpenses 
+  recentExpenses,
+  onUpdateData 
 }: DashboardProps) => {
   const remaining = monthlyBudget - spent;
   const spentPercentage = (spent / monthlyBudget) * 100;
   const isOverBudget = spent > monthlyBudget;
+  const { toast } = useToast();
+
+  const getBalanceColor = (balance: number) => {
+    if (balance < 1000) return "text-danger";
+    if (balance < 3000) return "text-warning";
+    return "text-success";
+  };
+
+  const getSavingsMessage = () => {
+    if (remaining > 500) {
+      return "🎉 Great job saving money! You're on track!";
+    }
+    if (remaining > 0) {
+      return "💪 Good spending control! Keep it up!";
+    }
+    return "⚠️ Consider reviewing your expenses.";
+  };
 
   return (
     <div className="space-y-6 p-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-4">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Finance Dashboard</h1>
-          <p className="text-muted-foreground mt-1">Track your spending and reach your goals</p>
+          <p className="text-muted-foreground mt-1">{getSavingsMessage()}</p>
         </div>
-        <QuickActions />
+        <div className="flex gap-2">
+          <ShareExpenses expenses={recentExpenses} />
+          <QuickActions onAddMoney={() => toast({ title: "Add Money", description: "Feature coming soon!" })} />
+        </div>
       </div>
 
       {/* Overview Cards */}
@@ -54,7 +81,12 @@ export const Dashboard = ({
             <Wallet className="h-4 w-4 text-success" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-foreground">₹{totalBalance.toFixed(2)}</div>
+            <EditableField
+              value={totalBalance}
+              onSave={(value) => onUpdateData({ totalBalance: value })}
+              type="currency"
+              className={`text-2xl font-bold ${getBalanceColor(totalBalance)}`}
+            />
             <p className="text-xs text-muted-foreground mt-1">
               Available funds
             </p>
@@ -67,7 +99,12 @@ export const Dashboard = ({
             <DollarSign className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-foreground">₹{monthlyBudget.toFixed(2)}</div>
+            <EditableField
+              value={monthlyBudget}
+              onSave={(value) => onUpdateData({ monthlyBudget: value })}
+              type="currency"
+              className="text-2xl font-bold text-foreground"
+            />
             <p className="text-xs text-muted-foreground mt-1">
               Budget limit
             </p>
@@ -133,10 +170,11 @@ export const Dashboard = ({
         </CardContent>
       </Card>
 
-      {/* Charts and Goals */}
+      {/* Enhanced Charts */}
+      <EnhancedCharts expenses={recentExpenses} monthlyBudget={monthlyBudget} spent={spent} />
+
+      {/* Goals and Wallet */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <ExpenseChart expenses={recentExpenses} />
-        
         <Card className="bg-card border-border">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-foreground">
@@ -167,7 +205,37 @@ export const Dashboard = ({
             </div>
           </CardContent>
         </Card>
+
+        <PersonalWallet />
       </div>
+
+      {/* Monthly Expenses Breakdown */}
+      <Card className="bg-card border-border">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-foreground">
+            <TrendingUp className="h-5 w-5" />
+            This Month's Expenses
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            {recentExpenses.map((expense, index) => (
+              <div key={expense.id} className="flex justify-between items-center p-3 bg-muted rounded-lg">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                    <span className="text-sm font-medium text-primary">{index + 1}</span>
+                  </div>
+                  <div>
+                    <p className="font-medium text-foreground">{expense.description}</p>
+                    <p className="text-sm text-muted-foreground">{expense.category} • {expense.date}</p>
+                  </div>
+                </div>
+                <span className="font-bold text-danger">-₹{expense.amount.toFixed(2)}</span>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
